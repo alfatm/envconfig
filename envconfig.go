@@ -103,7 +103,7 @@ func gatherInfo(prefix string, spec interface{}) ([]varInfo, error) {
 		info.Key = info.Name
 
 		// Best effort to un-pick camel casing as separate words
-		if isTrue(ftype.Tag.Get("split_words")) {
+		if !isFalse(ftype.Tag.Get("split_words")) {
 			words := gatherRegexp.FindAllStringSubmatch(ftype.Name, -1)
 			if len(words) > 0 {
 				var name []string
@@ -379,4 +379,15 @@ func binaryUnmarshaler(field reflect.Value) (b encoding.BinaryUnmarshaler) {
 func isTrue(s string) bool {
 	b, _ := strconv.ParseBool(s)
 	return b
+}
+
+func isFalse(s string) bool { // i.e. default true
+	switch s {
+	case "1", "t", "T", "true", "TRUE", "True":
+		return true
+	case "0", "f", "F", "false", "FALSE", "False":
+		return false
+	}
+
+	return true
 }
