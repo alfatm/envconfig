@@ -389,5 +389,5 @@ func isFalse(s string) bool { // i.e. default true
 		return false
 	}
 
-	return true
+	return false
 }
